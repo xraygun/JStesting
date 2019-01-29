@@ -1,0 +1,9 @@
+//the temp is 293 Kelv.
+const kelvin = 293; 
+// celcius is 273 degrees less than kelvin
+let celsius = (kelvin - 273);
+//this line converts celsius to fahrenheit which is Celsius*(9/5)+32
+let fahrenheit = celsius * (9/5) + 32;
+// use .floor function to round down the decimal
+fahrenheit = Math.floor(fahrenheit);
+console.log(`If the temperature is 293 K, it is ${fahrenheit} degrees Fahrenheit and ${celsius} degrees Celsius.`);
