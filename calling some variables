@@ -1,0 +1,6 @@
+const test1 = 'testing 1'; //constraint - declare a const value
+console.log(test1);
+let test2 = 'testing 2'; //let - declare a reassignable value
+console.log(test2);
+var test3 = 'testing 3'; //variable - reusable data 
+console.log(test3)
