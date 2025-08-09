@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Bearded Dragon Feeder</title>
+    <meta name="description" content="Searchable nutrition guide for bearded dragon foods" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+      :root {
+        --bg: #0b1020;
+        --panel: #11162b;
+        --muted: #8a93a6;
+        --text: #e6ebff;
+        --brand: #6ea8fe;
+        --brand-2: #b48bff;
+        --danger: #ff6b6b;
+        --warning: #ffd166;
+        --success: #4cc9a6;
+        --border: #1b2342;
+      }
+      * { box-sizing: border-box }
+      html, body { height: 100% }
+      body {
+        margin: 0;
+        font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+        background: radial-gradient(1200px 600px at 80% -200px, rgba(110,168,254,0.12), transparent),
+                    radial-gradient(900px 500px at -100px 20%, rgba(180,139,255,0.10), transparent),
+                    var(--bg);
+        color: var(--text);
+      }
+      .container {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 32px 16px 48px;
+      }
+      header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 24px;
+      }
+      .logo {
+        width: 40px; height: 40px; border-radius: 10px;
+        background: linear-gradient(135deg, var(--brand), var(--brand-2));
+        display: grid; place-items: center; font-weight: 800; color: #0a0f1e;
+      }
+      h1 { font-size: 22px; margin: 0 }
+      .muted { color: var(--muted); font-size: 14px }
+
+      .search-row { display: grid; grid-template-columns: 1fr 180px; gap: 12px; margin: 16px 0 18px }
+      .search {
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 10px 12px;
+        display: flex; gap: 10px; align-items: center;
+      }
+      .search input {
+        flex: 1; background: transparent; border: none; outline: none; color: var(--text);
+        font-size: 14px;
+      }
+      .select {
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        color: var(--text);
+        padding: 10px 12px; font-size: 14px;
+      }
+
+      .panel {
+        background: rgba(17,22,43,0.85);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        overflow: hidden;
+      }
+      .list-head, .row { display: grid; grid-template-columns: 2fr 120px 160px 1fr; gap: 12px; }
+      .list-head { padding: 12px 14px; background: rgba(255,255,255,0.02); border-bottom: 1px solid var(--border); color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: .06em }
+      .row { padding: 12px 14px; align-items: center; border-top: 1px solid rgba(255,255,255,0.03) }
+      .row:first-child { border-top: none }
+
+      .pill { padding: 4px 8px; border-radius: 999px; font-size: 12px; font-weight: 600; display: inline-block }
+      .pill.staple { background: rgba(76,201,166,0.15); color: var(--success); border: 1px solid rgba(76,201,166,0.25) }
+      .pill.occasional { background: rgba(255,209,102,0.12); color: var(--warning); border: 1px solid rgba(255,209,102,0.22) }
+      .pill.treat { background: rgba(180,139,255,0.12); color: var(--brand-2); border: 1px solid rgba(180,139,255,0.22) }
+      .pill.avoid { background: rgba(255,107,107,0.12); color: var(--danger); border: 1px solid rgba(255,107,107,0.22) }
+
+      .stats { display: flex; gap: 10px; align-items: center; margin-top: 8px }
+      .kbd { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; font-size: 12px; color: var(--muted); border: 1px solid var(--border); padding: 2px 6px; border-radius: 6px; background: rgba(255,255,255,0.03) }
+      .hint { color: var(--muted); font-size: 12px }
+
+      .footer {
+        margin-top: 16px; color: var(--muted); font-size: 12px; display: flex; justify-content: space-between; align-items: center;
+      }
+
+      @media (max-width: 700px) {
+        .list-head, .row { grid-template-columns: 1.6fr 100px 120px 1fr }
+        .search-row { grid-template-columns: 1fr }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <div class="logo">BD</div>
+        <div>
+          <h1>Bearded Dragon Feeder</h1>
+          <div class="muted">Search safe foods and see quick nutrition guidance</div>
+        </div>
+      </header>
+
+      <div class="search-row">
+        <div class="search" role="search">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M21 21l-4.2-4.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.6"/></svg>
+          <input id="search" type="text" placeholder="Search foods (e.g., collard, roach, berry)…" aria-label="Search foods" autofocus />
+          <span class="kbd" aria-hidden="true">/</span>
+        </div>
+        <select id="filterType" class="select" aria-label="Filter by type">
+          <option value="all">All types</option>
+          <option value="greens">Greens</option>
+          <option value="vegetable">Vegetables</option>
+          <option value="fruit">Fruits</option>
+          <option value="insect">Insects</option>
+          <option value="herb">Herbs/Flowers</option>
+        </select>
+      </div>
+
+      <div class="panel" role="table" aria-label="Food list">
+        <div class="list-head" role="row">
+          <div role="columnheader">Food</div>
+          <div role="columnheader">Type</div>
+          <div role="columnheader">Guidance</div>
+          <div role="columnheader">Notes</div>
+        </div>
+        <div id="list" role="rowgroup"></div>
+      </div>
+
+      <div class="footer">
+        <div id="resultsCount">0 items</div>
+        <div class="hint">Tip: Press <span class="kbd">/</span> to focus search</div>
+      </div>
+    </div>
+
+    <script>
+      const foods = [
+        // Greens
+        { name: 'Collard Greens', type: 'greens', guidance: 'staple', caP: '2.0:1', notes: 'High calcium, low oxalates' },
+        { name: 'Mustard Greens', type: 'greens', guidance: 'staple', caP: '2.4:1', notes: 'Peppery; mix with other greens' },
+        { name: 'Turnip Greens', type: 'greens', guidance: 'staple', caP: '4.5:1', notes: 'Great Ca:P; rotate' },
+        { name: 'Dandelion Greens', type: 'greens', guidance: 'staple', caP: '2.8:1', notes: 'Also flowers are safe' },
+        { name: 'Endive/Escarole', type: 'greens', guidance: 'staple', caP: '1.9:1', notes: 'Good moisture, low oxalates' },
+        { name: 'Arugula (Rocket)', type: 'greens', guidance: 'occasional', caP: '3.2:1', notes: 'Slightly goitrogenic; rotate' },
+        { name: 'Kale', type: 'greens', guidance: 'occasional', caP: '2.4:1', notes: 'Goitrogens/oxalates; moderate' },
+        { name: 'Spinach', type: 'greens', guidance: 'avoid', caP: '2.3:1', notes: 'High oxalates bind calcium' },
+        { name: 'Romaine Lettuce', type: 'greens', guidance: 'occasional', caP: '0.6:1', notes: 'Low nutrients; better options exist' },
+        { name: 'Iceberg Lettuce', type: 'greens', guidance: 'avoid', caP: '0.2:1', notes: 'Very low nutrition; can cause diarrhea' },
+
+        // Vegetables
+        { name: 'Butternut Squash', type: 'vegetable', guidance: 'staple', caP: '1.6:1', notes: 'Grate finely' },
+        { name: 'Acorn Squash', type: 'vegetable', guidance: 'staple', caP: '1.1:1', notes: 'Good variety' },
+        { name: 'Yellow Squash', type: 'vegetable', guidance: 'staple', caP: '1.1:1', notes: 'Hydrating' },
+        { name: 'Zucchini', type: 'vegetable', guidance: 'occasional', caP: '0.7:1', notes: 'Lower Ca; mix with greens' },
+        { name: 'Bell Pepper (Red/Green)', type: 'vegetable', guidance: 'occasional', caP: '0.5:1', notes: 'High vit C; moderate' },
+        { name: 'Carrot', type: 'vegetable', guidance: 'occasional', caP: '0.6:1', notes: 'High vit A; limit to avoid hypervitaminosis' },
+        { name: 'Green Beans', type: 'vegetable', guidance: 'occasional', caP: '0.8:1', notes: 'Chop small' },
+        { name: 'Sweet Potato', type: 'vegetable', guidance: 'occasional', caP: '0.7:1', notes: 'Cooked/soft; beta-carotene' },
+
+        // Fruits (treats)
+        { name: 'Blueberries', type: 'fruit', guidance: 'treat', caP: '0.5:1', notes: 'Occasional; wash well' },
+        { name: 'Strawberries', type: 'fruit', guidance: 'treat', caP: '0.7:1', notes: 'Small amounts only' },
+        { name: 'Mango', type: 'fruit', guidance: 'treat', caP: '0.7:1', notes: 'High sugar' },
+        { name: 'Apple (peeled)', type: 'fruit', guidance: 'treat', caP: '0.6:1', notes: 'No seeds; small pieces' },
+        { name: 'Watermelon', type: 'fruit', guidance: 'treat', caP: '0.6:1', notes: 'Mostly water; rare treat' },
+
+        // Insects
+        { name: 'Dubia Roaches', type: 'insect', guidance: 'staple', caP: '1.6:1', notes: 'Excellent staple insect' },
+        { name: 'Black Soldier Fly Larvae', type: 'insect', guidance: 'staple', caP: '2.5:1', notes: 'Naturally high calcium' },
+        { name: 'Crickets', type: 'insect', guidance: 'occasional', caP: '0.3:1', notes: 'Gut-load; can carry parasites' },
+        { name: 'Hornworms', type: 'insect', guidance: 'treat', caP: '0.5:1', notes: 'Hydrating; good appetite booster' },
+        { name: 'Superworms', type: 'insect', guidance: 'occasional', caP: '0.1:1', notes: 'High fat; adults only' },
+        { name: 'Mealworms', type: 'insect', guidance: 'occasional', caP: '0.1:1', notes: 'Hard chitin; avoid for juveniles' },
+        { name: 'Waxworms', type: 'insect', guidance: 'treat', caP: '0.1:1', notes: 'Very high fat' },
+
+        // Herbs/flowers
+        { name: 'Cilantro (Coriander)', type: 'herb', guidance: 'occasional', caP: '1.4:1', notes: 'Aromatic; rotate' },
+        { name: 'Basil', type: 'herb', guidance: 'occasional', caP: '1.6:1', notes: 'Strong flavor; small amounts' },
+        { name: 'Dandelion Flowers', type: 'herb', guidance: 'staple', caP: '2.8:1', notes: 'Great enrichment' },
+      ];
+
+      const searchInput = document.getElementById('search');
+      const filterType = document.getElementById('filterType');
+      const list = document.getElementById('list');
+      const resultsCount = document.getElementById('resultsCount');
+
+      const formatType = (t) => ({
+        greens: 'Greens',
+        vegetable: 'Vegetable',
+        fruit: 'Fruit',
+        insect: 'Insect',
+        herb: 'Herb/Flower'
+      })[t] || t;
+
+      function createRow(food) {
+        const row = document.createElement('div');
+        row.className = 'row';
+        row.setAttribute('role', 'row');
+
+        const name = document.createElement('div');
+        name.innerHTML = `<div style="font-weight:600">${food.name}</div><div class="muted" style="font-size:12px">Ca:P ${food.caP}</div>`;
+
+        const type = document.createElement('div');
+        type.textContent = formatType(food.type);
+        type.className = 'muted';
+
+        const guidance = document.createElement('div');
+        const p = document.createElement('span');
+        p.className = `pill ${food.guidance}`;
+        p.textContent = food.guidance.charAt(0).toUpperCase() + food.guidance.slice(1);
+        guidance.appendChild(p);
+
+        const notes = document.createElement('div');
+        notes.textContent = food.notes;
+        notes.className = 'muted';
+
+        row.appendChild(name);
+        row.appendChild(type);
+        row.appendChild(guidance);
+        row.appendChild(notes);
+        return row;
+      }
+
+      function normalize(text) {
+        return text.toLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu, '');
+      }
+
+      function render() {
+        const q = normalize(searchInput.value.trim());
+        const ft = filterType.value;
+        const filtered = foods.filter(f => {
+          const matchesType = ft === 'all' || f.type === ft;
+          const matchesText = !q || normalize(f.name).includes(q) || normalize(f.notes).includes(q);
+          return matchesType && matchesText;
+        });
+
+        list.innerHTML = '';
+        for (const item of filtered) list.appendChild(createRow(item));
+        resultsCount.textContent = `${filtered.length} item${filtered.length === 1 ? '' : 's'}`;
+      }
+
+      // Events
+      searchInput.addEventListener('input', render);
+      filterType.addEventListener('change', render);
+
+      // Keyboard focus shortcut
+      window.addEventListener('keydown', (e) => {
+        if (e.key === '/' && document.activeElement !== searchInput) {
+          e.preventDefault();
+          searchInput.focus();
+          searchInput.select();
+        }
+      });
+
+      // Initial render
+      render();
+    </script>
+  </body>
+</html>
